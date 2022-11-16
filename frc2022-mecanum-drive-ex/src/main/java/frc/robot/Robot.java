@@ -51,6 +51,7 @@ public class Robot extends TimedRobot {
   /* Robot Commands */
   private final DriveTimed mSimpleAuto = new DriveTimed(3, 1, 0, 0, mRobotDrive);
   private final DriveTimed mAnotherAuto = new DriveTimed(10, 1, 0, 0, mRobotDrive);
+  private final DriveCommand drive = new DriveCommand(1, 0, 0, mRobotDrive);
   SendableChooser<DriveTimed> m_chooser = new SendableChooser<>();
   private DriveTimed m_auto_command;
 

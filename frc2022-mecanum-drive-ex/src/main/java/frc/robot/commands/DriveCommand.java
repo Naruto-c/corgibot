@@ -6,13 +6,11 @@ import edu.wpi.first.wpilibj2.command.Subsystem;
 
 public class DriveCommand extends CommandBase{
     private final MecanumDriveCTRE mDrive;
-    private final double mTimeS;
     private final double mSpeedY;
     private final double mSpeedX;
     private final double mSpeedRot;
 
-    public DriveCommand(double timeS, double speedY, double speedX, double speedRot, MecanumDriveCTRE drive){
-        mTimeS = timeS;
+    public DriveCommand(double speedY, double speedX, double speedRot, MecanumDriveCTRE drive){
         mSpeedY = speedY;
         mSpeedX = speedX;
         mSpeedRot = speedRot;
