@@ -55,6 +55,7 @@ public class Robot extends TimedRobot {
   SendableChooser<DriveTimed> m_chooser = new SendableChooser<>();
   SendableChooser<DriveCommand> m_chooser2 = new SendableChooser<>();
   private DriveTimed m_auto_command;
+  private DriveCommand m_teleop_command;
 
   @Override
   public void robotInit() {
@@ -155,9 +156,13 @@ public class Robot extends TimedRobot {
   @Override
   public void autonomousInit() {
     m_auto_command = m_chooser.getSelected();
+    m_teleop_command = m_chooser2.getSelected();
     // schedule the autonomous command
     if (m_auto_command != null) {
       m_auto_command.schedule();
+    }
+    if (m_teleop_command != null){
+      m_teleop_command.schedule();
     }
   }
 
