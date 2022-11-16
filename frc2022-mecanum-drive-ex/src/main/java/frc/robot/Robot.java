@@ -51,8 +51,9 @@ public class Robot extends TimedRobot {
   /* Robot Commands */
   private final DriveTimed mSimpleAuto = new DriveTimed(3, 1, 0, 0, mRobotDrive);
   private final DriveTimed mAnotherAuto = new DriveTimed(10, 1, 0, 0, mRobotDrive);
-  private final DriveCommand drive = new DriveCommand(1, 0, 0, mRobotDrive);
+  private final DriveCommand mDrive = new DriveCommand(1, 0, 0, mRobotDrive);
   SendableChooser<DriveTimed> m_chooser = new SendableChooser<>();
+  SendableChooser<DriveCommand> m_chooser2 = new SendableChooser<>();
   private DriveTimed m_auto_command;
 
   @Override
@@ -98,6 +99,8 @@ public class Robot extends TimedRobot {
     // auto selections
     m_chooser.setDefaultOption("Simple Auto", mSimpleAuto);
     m_chooser.addOption("Another Auto", mAnotherAuto);
+    //teleop selection
+    m_chooser2.setDefaultOption("Normal drive", mDrive);
   }
 
   public void doSmartDashboardTelemetry() {    
