@@ -9,6 +9,7 @@ import java.util.Arrays;
 import java.util.List;
 
 import edu.wpi.first.wpilibj.Joystick;
+import edu.wpi.first.wpilibj.XboxController;
 import edu.wpi.first.wpilibj.TimedRobot;
 import edu.wpi.first.wpilibj.motorcontrol.Talon;
 import edu.wpi.first.wpilibj.smartdashboard.*;
@@ -53,9 +54,7 @@ public class Robot extends TimedRobot {
   private final DriveTimed mAnotherAuto = new DriveTimed(10, 1, 0, 0, mRobotDrive);
   private final DriveCommand mDrive = new DriveCommand(1, 0, 0, mRobotDrive);
   SendableChooser<DriveTimed> m_chooser = new SendableChooser<>();
-  SendableChooser<DriveCommand> m_chooser2 = new SendableChooser<>();
   private DriveTimed m_auto_command;
-  private DriveCommand m_teleop_command;
 
   @Override
   public void robotInit() {
@@ -101,7 +100,6 @@ public class Robot extends TimedRobot {
     m_chooser.setDefaultOption("Simple Auto", mSimpleAuto);
     m_chooser.addOption("Another Auto", mAnotherAuto);
     //teleop selection
-    m_chooser2.setDefaultOption("Normal drive", mDrive);
   }
 
   public void doSmartDashboardTelemetry() {    
@@ -138,10 +136,9 @@ public class Robot extends TimedRobot {
 
   @Override
   public void teleopInit() {
-    m_teleop_command = m_chooser2.getSelected();
-    if(m_teleop_command != null){
-      m_teleop_command.schedule();
-    }
+
+    //xboxcontroller.(GETX).Whenheld(new Drivecommand(xJoystickLeft))
+
   }
 
   @Override
