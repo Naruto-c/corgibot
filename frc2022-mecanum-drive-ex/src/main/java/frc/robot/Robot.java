@@ -15,6 +15,7 @@ import edu.wpi.first.wpilibj.motorcontrol.Talon;
 import edu.wpi.first.wpilibj.smartdashboard.*;
 import edu.wpi.first.wpilibj2.command.Command;
 import edu.wpi.first.wpilibj2.command.CommandScheduler;
+import edu.wpi.first.wpilibj2.command.button.Button;
 
 import com.ctre.phoenix.motorcontrol.can.TalonSRX;
 import com.ctre.phoenix.motorcontrol.can.TalonSRXConfiguration;
@@ -29,6 +30,10 @@ import frc.robot.commands.*;
 
 /** This is a demo program showing how to use Mecanum control with the MecanumDrive class. */
 public class Robot extends TimedRobot {
+
+  /* Xbox controller*/
+  private final XboxController a = new XboxController(0);
+
   /* CAN IDs; RIO is in the front left of bot */
   private static final int kFrontLeftId = 0x03;
   private static final int kRearLeftId = 0x06;
@@ -52,7 +57,6 @@ public class Robot extends TimedRobot {
   /* Robot Commands */
   private final DriveTimed mSimpleAuto = new DriveTimed(3, 1, 0, 0, mRobotDrive);
   private final DriveTimed mAnotherAuto = new DriveTimed(10, 1, 0, 0, mRobotDrive);
-  private final DriveCommand mDrive = new DriveCommand(1, 0, 0, mRobotDrive);
   SendableChooser<DriveTimed> m_chooser = new SendableChooser<>();
   private DriveTimed m_auto_command;
 
@@ -138,7 +142,7 @@ public class Robot extends TimedRobot {
   public void teleopInit() {
 
     //xboxcontroller.(GETX).Whenheld(new Drivecommand(xJoystickLeft))
-
+    new Button(a::getXButton).whenHeld(new DriveCommand(a::getLeftY, a::getLeftX, a::getRightX, mRobotDrive));
   }
 
   @Override
