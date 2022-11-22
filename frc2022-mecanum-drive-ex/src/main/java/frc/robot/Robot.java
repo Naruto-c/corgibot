@@ -27,6 +27,7 @@ import com.ctre.phoenix.motorcontrol.FeedbackDevice;
 
 import frc.robot.MecanumDriveCTRE;
 import frc.robot.commands.*;
+import frc.util.Util;
 
 /** This is a demo program showing how to use Mecanum control with the MecanumDrive class. */
 public class Robot extends TimedRobot {
@@ -142,7 +143,7 @@ public class Robot extends TimedRobot {
   public void teleopInit() {
 
     //xboxcontroller.(GETX).Whenheld(new Drivecommand(xJoystickLeft))
-    new Button(a::getXButton).whenHeld(new DriveCommand(a::getLeftY, a::getLeftX, a::getRightX, mRobotDrive));
+    new Button(a::getXButton).whenHeld(new DriveCommand(() -> (-modifyAxis(a.getLeftY())), () -> (-modifyAxis(a.getLeftX())), () -> (-modifyAxis(a.getRightX())), mRobotDrive));
   }
 
   @Override
@@ -170,4 +171,14 @@ public class Robot extends TimedRobot {
 
   @Override
   public void autonomousPeriodic() {}
+
+  private static double modifyAxis(double value) {
+    // Deadband
+    value = Util.deadband(value, 0.2);
+
+    // Square the axis
+    value = Math.copySign(value * value, value);
+
+    return value;
+  }
 }
