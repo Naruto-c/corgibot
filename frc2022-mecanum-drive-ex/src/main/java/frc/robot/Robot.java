@@ -147,7 +147,7 @@ public class Robot extends TimedRobot {
       new DriveCommand(
         () -> (-modifyAxis(a.getLeftY())), 
         () -> (-modifyAxis(a.getLeftX())), 
-        () -> (-modifyAxis(a.getRightX())), 
+        () -> (-modifyAxis(a.getLeftTriggerAxis()-a.getRightTriggerAxis())), 
         mRobotDrive));
   }
 
@@ -161,11 +161,13 @@ public class Robot extends TimedRobot {
     //   mJoystickA.getRawAxis(kJoystickARightX),
     //   0.0);
 
+    SmartDashboard.putNumber("leftX", a.getLeftX());
+
     // makes robot spin
     mRobotDrive.driveCartesian(
       -modifyAxis(a.getLeftY()),
       -modifyAxis(a.getLeftX()),
-      -modifyAxis(a.getRightX()),
+      -modifyAxis(a.getLeftTriggerAxis()-a.getRightTriggerAxis()),
       0.0);
   }
 
