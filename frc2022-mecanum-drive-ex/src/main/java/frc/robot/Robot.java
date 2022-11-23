@@ -8,6 +8,7 @@ import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
 
+import edu.wpi.first.math.MathUtil;
 import edu.wpi.first.wpilibj.Joystick;
 import edu.wpi.first.wpilibj.XboxController;
 import edu.wpi.first.wpilibj.TimedRobot;
@@ -27,7 +28,6 @@ import com.ctre.phoenix.motorcontrol.FeedbackDevice;
 
 import frc.robot.MecanumDriveCTRE;
 import frc.robot.commands.*;
-import frc.util.Util;
 
 /** This is a demo program showing how to use Mecanum control with the MecanumDrive class. */
 public class Robot extends TimedRobot {
@@ -143,17 +143,29 @@ public class Robot extends TimedRobot {
   public void teleopInit() {
 
     //xboxcontroller.(GETX).Whenheld(new Drivecommand(xJoystickLeft))
-    new Button(a::getXButton).whenHeld(new DriveCommand(() -> (-modifyAxis(a.getLeftY())), () -> (-modifyAxis(a.getLeftX())), () -> (-modifyAxis(a.getRightX())), mRobotDrive));
+    new Button(a::getXButton).whenHeld(
+      new DriveCommand(
+        () -> (-modifyAxis(a.getLeftY())), 
+        () -> (-modifyAxis(a.getLeftX())), 
+        () -> (-modifyAxis(a.getRightX())), 
+        mRobotDrive));
   }
 
   @Override
   public void teleopPeriodic() {
     // Use the joystick X axis for lateral movement, Y axis for forward
     // movement, and Z axis for rotation.
+    // mRobotDrive.driveCartesian(
+    //   -mJoystickA.getRawAxis(kJoystickALeftY),
+    //   mJoystickA.getRawAxis(kJoystickALeftX),
+    //   mJoystickA.getRawAxis(kJoystickARightX),
+    //   0.0);
+
+    // makes robot spin
     mRobotDrive.driveCartesian(
-      -mJoystickA.getRawAxis(kJoystickALeftY),
-      mJoystickA.getRawAxis(kJoystickALeftX),
-      mJoystickA.getRawAxis(kJoystickARightX),
+      -modifyAxis(a.getLeftY()),
+      -modifyAxis(a.getLeftX()),
+      -modifyAxis(a.getRightX()),
       0.0);
   }
 
@@ -174,7 +186,7 @@ public class Robot extends TimedRobot {
 
   private static double modifyAxis(double value) {
     // Deadband
-    value = Util.deadband(value, 0.2);
+    value = MathUtil.applyDeadband(value, 0.5);
 
     // Square the axis
     value = Math.copySign(value * value, value);
