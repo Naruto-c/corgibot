@@ -9,6 +9,7 @@ import java.util.Arrays;
 import java.util.List;
 
 import edu.wpi.first.math.MathUtil;
+import edu.wpi.first.wpilibj.AnalogGyro;
 import edu.wpi.first.wpilibj.Joystick;
 import edu.wpi.first.wpilibj.XboxController;
 import edu.wpi.first.wpilibj.TimedRobot;
@@ -60,6 +61,7 @@ public class Robot extends TimedRobot {
   private final DriveTimed mAnotherAuto = new DriveTimed(10, 1, 0, 0, mRobotDrive);
   SendableChooser<DriveTimed> m_chooser = new SendableChooser<>();
   private DriveTimed m_auto_command;
+  AnalogGyro gyro = new AnalogGyro(0);
 
   @Override
   public void robotInit() {
@@ -168,7 +170,7 @@ public class Robot extends TimedRobot {
       -modifyAxis(a.getLeftY()),
       -modifyAxis(a.getLeftX()),
       -modifyAxis(a.getLeftTriggerAxis()-a.getRightTriggerAxis()),
-      0.0);
+      gyro.getAngle());
   }
 
   //public Command getAutonomousCommand() {
