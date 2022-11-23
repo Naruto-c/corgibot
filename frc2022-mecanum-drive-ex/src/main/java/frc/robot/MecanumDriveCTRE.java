@@ -203,8 +203,8 @@ public class MecanumDriveCTRE extends RobotDriveBase implements Sendable, AutoCl
    *     positive.
    */
   @SuppressWarnings("ParameterName")
-  public void driveCartesian(double ySpeed, double xSpeed, double zRotation) {
-    driveCartesian(ySpeed, xSpeed, zRotation, 0.0);
+  public void driveCartesian(double ySpeed, double xSpeed, double zRotationL, double zRotationR) {
+    driveCartesian(ySpeed, xSpeed, zRotationL, zRotationR, 0.0);
   }
 
   /**
@@ -221,7 +221,7 @@ public class MecanumDriveCTRE extends RobotDriveBase implements Sendable, AutoCl
    *     to implement field-oriented controls.
    */
   @SuppressWarnings("ParameterName")
-  public void driveCartesian(double ySpeed, double xSpeed, double zRotation, double gyroAngle) {
+  public void driveCartesian(double ySpeed, double xSpeed, double zRotationL, double zRotationR, double gyroAngle) {
     if (!m_reported) {
       HAL.report(
           tResourceType.kResourceType_RobotDrive, tInstances.kRobotDrive2_MecanumCartesian, 4);
@@ -231,7 +231,7 @@ public class MecanumDriveCTRE extends RobotDriveBase implements Sendable, AutoCl
     ySpeed = MathUtil.applyDeadband(ySpeed, m_deadband);
     xSpeed = MathUtil.applyDeadband(xSpeed, m_deadband);
 
-    var speeds = driveCartesianIK(ySpeed, xSpeed, zRotation, gyroAngle);
+    var speeds = driveCartesianIK(ySpeed, xSpeed, zRotationL, zRotationR, gyroAngle);
 
     m_frontLeftMotor.set(m_driveControlMode, m_driveVelocityScale * speeds.frontLeft * m_maxOutput * m_frontLeftCoeff);
     m_frontRightMotor.set(m_driveControlMode, m_driveVelocityScale * speeds.frontRight * m_maxOutput * m_frontRightCoeff);
@@ -279,8 +279,8 @@ public class MecanumDriveCTRE extends RobotDriveBase implements Sendable, AutoCl
    * @return Wheel speeds [-1.0..1.0].
    */
   @SuppressWarnings("ParameterName")
-  public static WheelSpeeds driveCartesianIK(double ySpeed, double xSpeed, double zRotation) {
-    return driveCartesianIK(ySpeed, xSpeed, zRotation, 0.0);
+  public static WheelSpeeds driveCartesianIK(double ySpeed, double xSpeed, double zRotationL, double zRotationR) {
+    return driveCartesianIK(ySpeed, xSpeed, zRotationL, zRotationR, 0.0);
   }
 
   /**
@@ -299,7 +299,7 @@ public class MecanumDriveCTRE extends RobotDriveBase implements Sendable, AutoCl
    */
   @SuppressWarnings("ParameterName")
   public static WheelSpeeds driveCartesianIK(
-      double ySpeed, double xSpeed, double zRotation, double gyroAngle) {
+      double ySpeed, double xSpeed, double zRotationL, double zRotationR, double gyroAngle) {
     ySpeed = MathUtil.clamp(ySpeed, -1.0, 1.0);
     xSpeed = MathUtil.clamp(xSpeed, -1.0, 1.0);
 
@@ -308,10 +308,10 @@ public class MecanumDriveCTRE extends RobotDriveBase implements Sendable, AutoCl
     input.rotate(-gyroAngle);
 
     double[] wheelSpeeds = new double[4];
-    wheelSpeeds[MotorType.kFrontLeft.value] = input.x + input.y + zRotation;
-    wheelSpeeds[MotorType.kFrontRight.value] = input.x - input.y - zRotation;
-    wheelSpeeds[MotorType.kRearLeft.value] = input.x - input.y + zRotation;
-    wheelSpeeds[MotorType.kRearRight.value] = input.x + input.y - zRotation;
+    wheelSpeeds[MotorType.kFrontLeft.value] = input.x + input.y + zRotationL;
+    wheelSpeeds[MotorType.kFrontRight.value] = input.x - input.y - zRotationR;
+    wheelSpeeds[MotorType.kRearLeft.value] = input.x - input.y + zRotationL;
+    wheelSpeeds[MotorType.kRearRight.value] = input.x + input.y - zRotationR;
 
     normalize(wheelSpeeds);
 

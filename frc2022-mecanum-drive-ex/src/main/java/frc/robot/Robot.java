@@ -56,8 +56,8 @@ public class Robot extends TimedRobot {
   private Joystick mJoystickA;
   private TalonSRXConfiguration mDriveTalonSRXConfigAll;
   /* Robot Commands */
-  private final DriveTimed mSimpleAuto = new DriveTimed(3, 1, 0, 0, mRobotDrive);
-  private final DriveTimed mAnotherAuto = new DriveTimed(10, 1, 0, 0, mRobotDrive);
+  private final DriveTimed mSimpleAuto = new DriveTimed(3, 1, 0, 0, 0, mRobotDrive);
+  private final DriveTimed mAnotherAuto = new DriveTimed(10, 1, 0, 0, 0, mRobotDrive);
   SendableChooser<DriveTimed> m_chooser = new SendableChooser<>();
   private DriveTimed m_auto_command;
 
@@ -147,7 +147,8 @@ public class Robot extends TimedRobot {
       new DriveCommand(
         () -> (-modifyAxis(a.getLeftY())), 
         () -> (-modifyAxis(a.getLeftX())), 
-        () -> (-modifyAxis(a.getRightX())), 
+        () -> (-modifyAxis(a.getLeftTriggerAxis())),
+        () -> (-modifyAxis(a.getRightTriggerAxis())), 
         mRobotDrive));
   }
 
@@ -165,7 +166,8 @@ public class Robot extends TimedRobot {
     mRobotDrive.driveCartesian(
       -modifyAxis(a.getLeftY()),
       -modifyAxis(a.getLeftX()),
-      -modifyAxis(a.getRightX()),
+      -modifyAxis(a.getLeftTriggerAxis()),
+      -modifyAxis(a.getRightTriggerAxis()),
       0.0);
   }
 

@@ -19,7 +19,8 @@ public class DriveTimed extends CommandBase {
   private final double mTimeS;
   private final double mSpeedY;
   private final double mSpeedX;
-  private final double mSpeedRot;
+  private final double mSpeedRotL;
+  private final double mSpeedRotR;
   private final Timer mTimer = new Timer();
 
   /**
@@ -35,12 +36,14 @@ public class DriveTimed extends CommandBase {
       double timeS,
       double speedY,
       double speedX,
-      double speedRot,
+      double speedRotL,
+      double speedRotR,
       MecanumDriveCTRE drive) {
     mTimeS = timeS;
     mSpeedY = speedY;
     mSpeedX = speedX;
-    mSpeedRot = speedRot;
+    mSpeedRotL = speedRotL;
+    mSpeedRotR = speedRotR;
     mDrive = drive;
   }
 
@@ -54,7 +57,7 @@ public class DriveTimed extends CommandBase {
 
   @Override
   public void execute() {
-    mDrive.driveCartesian(mSpeedY, mSpeedX, mSpeedRot);
+    mDrive.driveCartesian(mSpeedY, mSpeedX, mSpeedRotL, mSpeedRotR);
   }
 
   @Override

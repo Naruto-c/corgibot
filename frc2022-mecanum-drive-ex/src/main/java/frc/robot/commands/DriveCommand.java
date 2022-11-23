@@ -11,12 +11,14 @@ public class DriveCommand extends CommandBase{
     private final MecanumDriveCTRE mDrive;
     private final DoubleSupplier mSpeedY;
     private final DoubleSupplier mSpeedX;
-    private final DoubleSupplier mSpeedRot;
+    private final DoubleSupplier mSpeedRotL;
+    private final DoubleSupplier mSpeedRotR;
 
-    public DriveCommand(DoubleSupplier speedY, DoubleSupplier speedX, DoubleSupplier speedRot, MecanumDriveCTRE drive){
+    public DriveCommand(DoubleSupplier speedY, DoubleSupplier speedX, DoubleSupplier speedRotL, DoubleSupplier speedRotR, MecanumDriveCTRE drive){
         mSpeedY = speedY;
         mSpeedX = speedX;
-        mSpeedRot = speedRot;
+        mSpeedRotL = speedRotL;
+        mSpeedRotR = speedRotR;
         mDrive = drive;
     }
 
@@ -25,7 +27,7 @@ public class DriveCommand extends CommandBase{
 
   @Override
   public void execute() {
-    mDrive.driveCartesian(mSpeedY.getAsDouble(), mSpeedX.getAsDouble(), mSpeedRot.getAsDouble());
+    mDrive.driveCartesian(mSpeedY.getAsDouble(), mSpeedX.getAsDouble(), mSpeedRotL.getAsDouble(), mSpeedRotR.getAsDouble());
   }
 
   @Override
